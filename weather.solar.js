@@ -11,9 +11,13 @@
   Johnson. I.R. 2013.
   DairyMod and the SGS Pasture Model: a mathematical description of the biophysical
     
+  Rotz, C. A., Corson, M.S., Chianese, D.S., Montes, F., Hafner, S.D., Bonifacio, H.F. and Coiner, C.U. 2014. 
+  The integrated farm system model: reference manual version 4.1. 
+  Available: http://afrsweb.usda.gov/SP2UserFiles/Place/19020500/Reference%20Manual.pdf Accessed January 3, 2015.
+
   Samani, Zohrab. 2000.
   Estimating Solar Radiation and Evapotranspiration Using Minimum Climatological Data.
-  J. Irrig. Drain 
+  J. Irrig. Drain
   
   Supit, I. 2003.
   Updated system description of the WOFOST crop growth simulation model as implemented
@@ -28,6 +32,22 @@
 */
 
 var weather = weather || {};
+
+/*
+  Rotz (2014)
+
+  Simple estimate of relative humidity if not avalble in weather data
+
+  rn    [-]   relative humidity
+  T_mn  [°C]  minimum temperature
+  T_mx  [°C]  maximum temperature
+*/
+
+weather.rh = function (T_mn, T_mx) {
+
+  return Math.min(1, 1 - Math.exp(-0.2 * (T_mx - T_mn)));
+
+};
 
 weather.solar = (function () {
 
