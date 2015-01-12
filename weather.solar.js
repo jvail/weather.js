@@ -36,9 +36,9 @@ var weather = weather || {};
 /*
   Rotz (2014)
 
-  Simple estimate of relative humidity if not avalble in weather data
+  Simple estimate of relative humidity if not available in weather data
 
-  rn    [-]   relative humidity
+  rh    [-]   relative humidity
   T_mn  [°C]  minimum temperature
   T_mx  [°C]  maximum temperature
 */
