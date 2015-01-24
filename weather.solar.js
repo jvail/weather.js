@@ -228,77 +228,67 @@ var f_s = function (R_s, R_a) {
 };
 
 /*
-  Returns array with length no_days.
+  doy   [#]     day of year (starts from 0)
+  date  [Date]  date object
+*/
+
+var doy = function (date) {
+
+  return ceil((date - (new Date(date.getFullYear(), 0, 1))) / MS_PER_DAY);
+
+};
+
+/*
+  Returns arrays with length T_mn.length.
 
   j           [decimal degree]  latitude
   T_mn        [°C]              array minimum temperature
   T_mx        [°C]              array maximum temperature
-  first_year  [year]
-  last_year   [year]
+  startDate   [date]            string, ISO Format (1995-01-01)
 */
 
-return (function (j, T_mn, T_mx, first_year, last_year) {
-
-  var no_days = ceil((new Date(last_year + 1, 0, 1) - new Date(first_year, 0, 1)) / MS_PER_DAY);
-
-  if (T_mn.length !== no_days || T_mx.length !== no_days) {
-    console.log('T_mn or T_mx != no_days');
-    return null;
-  }
+return (function (j, T_mn, T_mx, startDate) {
 
   /* return value */
   var ret = {
-
-      /* Maximum possible duration of sunshine or daylight hours [hour] */
-      N: new Float64Array(no_days)
-
-      /* Extraterrestrial radiation [MJ m-2 day-1] */
-    , R_a: new Float64Array(no_days)
-
-      /* Solar or shortwave radiation [MJ m-2 day-1] */
-    , R_s: new Float64Array(no_days)
-
-      /* Photosynthetically active radiation [MJ m-2 day-1] */
-    , PAR: new Float64Array(no_days)
-
-      /* Photosynthetic photon flux [μmol (photons) m-2 day-1] */
-    , PPF: new Float64Array(no_days)
-
-      /* Fraction of direct solar radiation [-] */
-    , f_s: new Float64Array(no_days)
-
+      N: []     /* Maximum possible duration of sunshine or daylight hours [hour] */
+    , R_a: []   /* Extraterrestrial radiation [MJ m-2 day-1] */
+    , R_s: []   /* Solar or shortwave radiation [MJ m-2 day-1] */
+    , PAR: []   /* Photosynthetically active radiation [MJ m-2 day-1] */
+    , PPF: []   /* Photosynthetic photon flux [μmol (photons) m-2 day-1] */
+    , f_s: []   /* Fraction of direct solar radiation [h h-1] */
+    , date: []  /* date string in ISO format */
+    , doy: []   /* day of year (start from 0) */
   };
 
-  var dr_, d_, ws_, R_a_, N_, R_s_, PAR_, PPF_, f_s_;
+  var _doy, date, dr_, d_, ws_, R_a_, N_, R_s_, PAR_, PPF_, f_s_;
 
-  var day_count = 0;
+  date = new Date(startDate);
+  _doy = doy(date);
 
-  for (var year = first_year; year < last_year + 1; year++) {
+  for (var i = 0, is = T_mn.length; i < is; i++) {
 
-    var days_in_year = ceil((new Date(year + 1, 0, 1) - new Date(year, 0, 1)) / MS_PER_DAY);
+    dr_   = dr(_doy + 1);
+    d_    = d(_doy + 1);
+    ws_   = ws(j, d_);
+    R_a_  = R_a(dr_, ws_, j, d_)
+    N_    = N(ws_);
+    R_s_  = R_s(R_a_, T_mn[i], T_mx[i]);
+    PAR_  = PAR(R_s_);
+    PPF_  = PPF(PAR_ * 1e6 /* MJ to J */);
+    f_s_  = f_s(R_s_, R_a_);
 
-    for (var day = 0; day < days_in_year; day++) {
+    ret.N[i]    = N_;
+    ret.R_a[i]  = R_a_;
+    ret.R_s[i]  = R_s_;
+    ret.PAR[i]  = PAR_;
+    ret.PPF[i]  = PPF_;
+    ret.f_s[i]  = f_s_;
+    ret.date[i] = date.toISOString().split('T')[0]; /* store date part and remove time string */
+    ret.doy[i]  = _doy;
 
-      dr_   = dr(day + 1);
-      d_    = d(day + 1);
-      ws_   = ws(j, d_);
-      R_a_  = R_a(dr_, ws_, j, d_)
-      N_    = N(ws_);
-      R_s_  = R_s(R_a_, T_mn[day_count], T_mx[day_count]);
-      PAR_  = PAR(R_s_);
-      PPF_  = PPF(PAR_ * 1e6 /* MJ to J */);
-      f_s_  = f_s(R_s_, R_a_);
-
-      ret.N[day_count]    = N_;
-      ret.R_a[day_count]  = R_a_;
-      ret.R_s[day_count]  = R_s_;
-      ret.PAR[day_count]  = PAR_;
-      ret.PPF[day_count]  = PPF_;
-      ret.f_s[day_count]  = f_s_;
-
-      day_count++;
-    
-    }   
+    date.setDate(date.getDate() + 1);
+    _doy = doy(date);
 
   }
   
