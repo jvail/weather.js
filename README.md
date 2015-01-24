@@ -1,7 +1,7 @@
 weather.js
 ==========
 
-Predicts, calculates various parameters - dependiing only on latitude and temperature (min, max) input - relevant to crop growth models if those parameters are not available: solar radiation (global, PAR, PPF, direct fraction), daylength.
+Predicts, calculates various parameters - depending only on latitude and temperature (min, max) input - relevant to crop growth models if those parameters are not available: solar radiation (global, PAR, PPF, direct fraction), daylength.
 
 ## Acknowledgements
 
