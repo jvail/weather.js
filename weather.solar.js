@@ -256,7 +256,7 @@ return (function (j, T_mn, T_mx, startDate) {
     , R_s: []   /* Solar or shortwave radiation [MJ m-2 day-1] */
     , PAR: []   /* Photosynthetically active radiation [MJ m-2 day-1] */
     , PPF: []   /* Photosynthetic photon flux [μmol (photons) m-2 day-1] */
-    , f_s: []   /* Fraction of direct solar radiation [h h-1] */
+    , f_s: []   /* Fraction of direct solar radiation [-] */
     , date: []  /* date string in ISO format */
     , doy: []   /* day of year (start from 0) */
   };
