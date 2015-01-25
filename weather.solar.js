@@ -228,13 +228,13 @@ var f_s = function (R_s, R_a) {
 };
 
 /*
-  doy   [#]     day of year (starts from 0)
+  doy   [#]     day of year
   date  [Date]  date object
 */
 
 var doy = function (date) {
 
-  return ceil((date - (new Date(date.getFullYear(), 0, 1))) / MS_PER_DAY);
+  return ceil((date - (new Date(date.getFullYear(), 0, 1))) / MS_PER_DAY) + 1;
 
 };
 
@@ -258,7 +258,7 @@ return (function (j, T_mn, T_mx, startDate) {
     , PPF: []   /* Photosynthetic photon flux [μmol (photons) m-2 day-1] */
     , f_s: []   /* Fraction of direct solar radiation [h h-1] */
     , date: []  /* date string in ISO format */
-    , doy: []   /* day of year (start from 0) */
+    , doy: []   /* day of year */
   };
 
   var _doy, date, dr_, d_, ws_, R_a_, N_, R_s_, PAR_, PPF_, f_s_;
@@ -268,8 +268,8 @@ return (function (j, T_mn, T_mx, startDate) {
 
   for (var i = 0, is = T_mn.length; i < is; i++) {
 
-    dr_   = dr(_doy + 1);
-    d_    = d(_doy + 1);
+    dr_   = dr(_doy);
+    d_    = d(_doy);
     ws_   = ws(j, d_);
     R_a_  = R_a(dr_, ws_, j, d_)
     N_    = N(ws_);
