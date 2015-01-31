@@ -15,9 +15,8 @@
   The integrated farm system model: reference manual version 4.1. 
   Available: http://afrsweb.usda.gov/SP2UserFiles/Place/19020500/Reference%20Manual.pdf Accessed January 3, 2015.
 
-  Samani, Zohrab. 2000.
-  Estimating Solar Radiation and Evapotranspiration Using Minimum Climatological Data.
-  J. Irrig. Drain
+  Hargreaves GH, Samani ZA. (1985) Reference crop evapotranspiration from temperature.
+  Appl Engine Agric. 1(2):96–99
   
   Supit, I. 2003.
   Updated system description of the WOFOST crop growth simulation model as implemented
@@ -140,7 +139,7 @@ var R_a = function (dr, ws, j, d, unit) {
 };
 
 /*
-  Samani (2000) eqs. 1 and 3
+  Hargreaves & Samani (1985)
 
   R_s   [MJ m-2 day-1]  Solar or shortwave radiation
   R_a   [MJ m-2 day-1]  Extraterrestrial radiation
@@ -150,11 +149,7 @@ var R_a = function (dr, ws, j, d, unit) {
 
 var R_s = function (R_a, T_mn, T_mx) {
 
-  var TD = T_mx - T_mn
-    , KT = 0.00185 * pow(TD, 2) - 0.0433 * TD + 0.4023
-    ; 
-
-  return KT * R_a * sqrt(TD);
+  return 0.162 * R_a * sqrt(T_mx - T_mn);
 
 };
 
