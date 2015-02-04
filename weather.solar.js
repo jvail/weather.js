@@ -229,7 +229,7 @@ var f_s = function (R_s, R_a) {
 
 var doy = function (date) {
 
-  return ceil((date - (new Date(date.getFullYear(), 0, 1))) / MS_PER_DAY) + 1;
+  return ceil((date - (new Date(date.getFullYear(), 0, 1))) / MS_PER_DAY);
 
 };
 
