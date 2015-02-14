@@ -149,7 +149,13 @@ var R_a = function (dr, ws, j, d, unit) {
 
 var R_s = function (R_a, T_mn, T_mx) {
 
-  return 0.162 * R_a * sqrt(T_mx - T_mn);
+  var TD = (T_mx - T_mn) <= 0 ? 1 : (T_mx - T_mn)
+    /* Samani, Z., 2000. Estimating Solar Radiation and Evapotranspiration Using Minimum Climatological Data.
+      J. of Irrig. and Drain. Engrg., ASCE, 126(4), 265-267. */ 
+    , K_T = 0.00185 * pow(TD, 2) - 0.0433 * TD + 0.4023 // 0.162 - 0.190 
+    ;
+
+  return R_a * K_T * sqrt(TD);
 
 };
 
