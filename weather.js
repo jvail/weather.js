@@ -285,7 +285,7 @@ var weather = (function () {
       ret.PAR[i]  = PAR_;
       ret.PPF[i]  = PPF_;
       ret.f_s[i]  = f_s_;
-      ret.date[i] = date.toISOString().split('T')[0]; /* store date part and remove time string */
+      ret.date[i] = date.toISOString().substr(0, 10); /* remove time string */
       ret.doy[i]  = _doy;
 
       date.setDate(date.getDate() + 1);
